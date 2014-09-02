@@ -1,0 +1,101 @@
+﻿@model MvcAuction.Models.Auction
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Auction</legend>
+
+        <!--Category property is added by copying the markup from othe properties and editing it-->
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Category)
+        </div>
+        <div class="editor-field">
+            <!--Instead of using EditorFor, we want to create a DropDownList with a list of default values-->
+            <!--Because creating a list here would be a violation of mvc, we will create it in the controller using ViewBag CASTED to SelectList-->
+            @Html.DropDownListFor(model => model.Category, (SelectList)ViewBag.CategoryList)
+            @Html.ValidationMessageFor(model => model.Category)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ImageUrl)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ImageUrl)
+            @Html.ValidationMessageFor(model => model.ImageUrl)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.StartTime)
+            @Html.ValidationMessageFor(model => model.StartTime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EndTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EndTime)
+            @Html.ValidationMessageFor(model => model.EndTime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartPrice)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.StartPrice)
+            @Html.ValidationMessageFor(model => model.StartPrice)
+        </div>
+
+        <!--Although we have already prevented users from editing this value in the controller action definition, we will comment this out because it's not needed-->
+        @*
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CurrentPrice)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CurrentPrice)
+            @Html.ValidationMessageFor(model => model.CurrentPrice)
+        </div>
+        *@
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<!--This statement enables client-side validation using the data annotation that we specified in the Auction class-->
+<!--This will handle validation in the browser and not contact the server at all if there are validation errors-->
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

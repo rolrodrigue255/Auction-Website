@@ -1,0 +1,14 @@
+﻿<!--This is a strongly-typed partial view that I've placed in the share folder so all controllers can access it -->
+@model MvcAuction.Models.Auction
+@{
+    //This variable is used to store the link for each object's auction page by using the model's ID
+    var link = "/Auctions/Auction/" + @Model.Id;
+}
+
+<div class="auction-tile">
+    <a href=@link>@Model.Title</a>
+    <p class="end-date">Ends at @Model.EndTime.ToString("g")</p>
+    <p class="price">Price:
+        @Model.CurrentPrice.GetValueOrDefault(Model.StartPrice).ToString("C")
+    </p>
+</div>

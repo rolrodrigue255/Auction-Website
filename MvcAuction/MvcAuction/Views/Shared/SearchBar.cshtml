@@ -1,0 +1,8 @@
+﻿<!--This is a partial view we will use to place a search bar in the navigation section of the layout file-->
+<!--This creates a form that calls the url.action method -->
+<!--The parameters for this method are the actionname, controllername, and the actionname's parameter-->
+<!--The third parameter's MUST match the parameter name of the parameter passed to the [httppost] controller action!)-->
+<form method="post" action="@Url.Action("SearchResults", "Auctions", "value")">
+    Search for Auctions: @Html.TextBox("value")
+    <input type="submit" value="Submit" />
+</form>

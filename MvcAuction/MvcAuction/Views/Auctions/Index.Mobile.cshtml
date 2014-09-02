@@ -1,0 +1,43 @@
+﻿<!--This is a copy of the Index file to be used for mobile devices by naming the file appropriately (some HTML is removed due to lack of screen space)-->
+<!--This index view was created using a strongly-typed view using the Auction model and List Scaffold template-->
+@model IEnumerable<MvcAuction.Models.Auction>
+
+@{
+    //This shows how to call the layout file (This will be commented out in the mobile version because there is no sidebar)
+    @*Layout = "~/Views/Shared/_LayoutWithSidebar.cshtml";*@
+    ViewBag.Title = "Auctions: Mobile";
+    //This statement disables any default or non-mobile view from rendering inside a mobile layout
+    DisplayModeProvider.Instance.RequireConsistentDisplayMode = true;
+}
+
+@*
+<!--Sidebar and Featured sections are removed for the mobile version of index because there is not enough screen space-->
+<!--Uses the @@section sidebar from "_LayoutWithSidebar" to render content-->
+@section sidebar{
+    <h3>This is my sidebar!</h3>
+}
+
+<!--Uses @@section to render content in the featuered section of the layout -->
+@section Featured{
+    <section class="featured">
+        <div class="content-wrapper">
+            This is some featured content!
+        </div>
+    </section>
+}
+*@
+
+<!--Uses @@section to render content in the Scripts section of the layout-->
+@section Scripts{
+    <!--This content will be rendered in the Scripts section-->
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<!--Displays the partial view "_AuctionTile" for each item in Model-->
+<!--Because our partial view only expects one object, we need to specify an object to use "item" in the parameters-->
+@foreach (var item in Model)
+{
+    @Html.Partial("_AuctionTile", item)
+}

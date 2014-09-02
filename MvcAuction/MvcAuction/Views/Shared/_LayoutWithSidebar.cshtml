@@ -1,0 +1,23 @@
+﻿@{   
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--This is needed to use the CSS stylings in the content folder-->
+@Styles.Render("~/Content/css")
+
+<!--Redefines the featured and Scripts section from the _layout.cshtml file-->
+<!--Properties from the _layout file won't automatically carry over, so we get an error if we don't redefine them as optional-->
+@section Featured{
+    @RenderSection("Featured", required: false)
+}
+@section Scripts{
+    @RenderSection("Scripts", required: false)
+}
+
+<div class="sidebar">
+    @RenderSection("sidebar")
+</div>
+
+<div class="content">
+    @RenderBody()
+</div>

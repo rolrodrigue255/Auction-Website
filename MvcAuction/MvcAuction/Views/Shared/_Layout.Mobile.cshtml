@@ -1,0 +1,37 @@
+﻿<!--This is a layout specifically designed to suit Mobile devices-->
+<!--This layout will be called whenever the application detects a mobile device by having the file named "_Layout.Mobile.cshtml"-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>MVC Auctions (Mobile)</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+    </head>
+        <body>
+            <header>
+                <h1>@Html.ActionLink("MVC Auctions", "Index", "Home")</h1>
+                <hr />
+                @Html.Action("CategoryNavigation", "Home")
+            </header>
+            <div id="body">
+                @RenderSection("featured", required: false)
+                <section class="content-wrapper main-content clear-fix">
+                    @RenderBody()
+                </section>
+            </div>
+            <footer>
+                <div class="content-wrapper">
+                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+                    <!--This is a link added to the bottom of the page so mobile users can view the desktop version of the view if they want to 
+                    <!--The parameters are the Link text, the actionName, ControllerName, and the current url (so the site knows which page the user is currently on for redirecting)-->
+                    <!--This is a good idea to add if you have decided to prevent users from seeing the desktop version using requiresconsistentdisplaymode method-->
+                    <p>@Html.ActionLink("Desktop Site", "SwitchView", "Home", new { returnUrl = Request.Url }, null)</p>
+                </div>
+            </footer>
+
+            @Scripts.Render("~/bundles/jquery")
+            @RenderSection("scripts", required: false)
+        </body>
+</html>

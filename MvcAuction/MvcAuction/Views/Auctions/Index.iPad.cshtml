@@ -1,0 +1,22 @@
+﻿<!--This is the index file that will be called if an iPad device is detected-->
+@model IEnumerable<MvcAuction.Models.Auction>
+
+@{
+    ViewBag.Title = "Auctions: iPad View";
+    DisplayModeProvider.Instance.RequireConsistentDisplayMode = true;
+}
+
+@section Scripts {
+    <!-- This content will be rendered in the Scripts section -->
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@foreach (var item in Model)
+{
+    @Html.Partial("_AuctionTile", item)
+}

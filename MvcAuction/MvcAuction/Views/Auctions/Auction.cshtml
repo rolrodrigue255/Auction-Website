@@ -1,0 +1,170 @@
+﻿@model MvcAuction.Models.Auction
+@{
+    //This is an example of how to create an object and display its properties using HTML
+    //Keep in mind that creating an instance of an object in the view file is a violation of MVC structure!!
+    //Udpate: This section will be commented out and moved to the Auctions Controller where it belongs!
+    
+    @*
+    var auction = new MvcAuction.Models.Auction()
+    {
+        Title = "Example Auction",
+        Description = "This is an example Auction",
+        StartTime = DateTime.Now,
+        EndTime = DateTime.Now.AddDays(7),
+        StartPrice = 1.00m,
+        CurrentPrice = null,
+    };
+    *@
+    
+    //This statement calls the Auction data in the controller by referencing the ViewData key
+    //Notice how we have to cast the Auction data to the Auction type.  This is because the view isn't strongly-typed
+    //To get around this problem, we can use the ViewBag property instead to pass data from controllers to views more easily
+    
+    @*
+        var auction = (MvcAuction.Models.Auction)ViewData["Auction"];
+    *@
+    
+    //This is the same statement as the one above, except now we're using ViewBag instead
+    @*
+        var auction = ViewBag.Auction;
+    *@
+    
+    //This is the same statement as the ones above, except now we're referencing the model property
+    var auction = Model;
+    //This statement sets the title to be equal to "Auction #" + the Id of the Auction
+    ViewBag.title = "Auction #" + @Model.Id;
+}
+
+
+<!--Uses URL.action to generate and display a link to the login page-->
+<!--The parameters passed is the ActionName followed by the ControllerName-->
+<!--    
+    <a href="@Url.Action("Login", "Account")">Login</a> 
+-->
+
+<!--Uses HTML helper ActionLink to create a link to the login page-->
+<!--The parameters passed are the link text, followed by the ActionName, followed by the ControllerName-->
+<!--
+@Html.ActionLink("Login", "Login", "Account")
+-->
+
+<div class="auction">
+
+    <h3>@auction.Title</h3>
+
+    <div class="details">
+        <p>Start Time: @auction.StartTime.ToString("g")</p>
+        <p>End Time: @auction.EndTime.ToString("g")</p>
+        <p>Starting Price: @auction.StartPrice.ToString("C")</p>
+        <!--Uses the CSS class "current-price" to find this element and update it after the Ajax request-->
+        <p class="current-price">Current Price:
+
+            @*
+            Since CurrentPrice is nullable, we have to check to
+            see if it has a value before we call .ToString()!
+            *@
+
+            @if (auction.CurrentPrice == null)
+            {
+                @: [No bids]
+            }
+            else
+            {
+                <span>@auction.CurrentPrice.Value.ToString("C")</span>
+                //Displays the Bid count 
+                <span>[@auction.BidCount bids]</span>
+            }
+        </p>
+        <p class="description">
+            Description: @auction.Description
+        </p>
+        <!--Adds a bid form using HMTL helpers so the user can add new bids-->
+        <p>
+          @using (Html.BeginForm("Bid", "Auctions"))
+          {
+              //Calculates the lowestBidAmount allowed by adding 1 to the CurrentPrice
+              var lowestBidAmount = auction.CurrentPrice.GetValueOrDefault(auction.StartPrice) + 1;
+            <span>
+                <!--Bid form which uses the lowestBidAmount as the default value for the textbox with name "amount"-->
+                Bid: $@Html.TextBox("amount", lowestBidAmount)
+                <!--Adds a validation message using the ValidationMessage HTML helper-->
+                @Html.ValidationMessage("amount")
+            </span>
+            
+            //This is a hidden field that contains the auction ID so the controller action knows which auction the user is bidding on 
+            @Html.Hidden("auctionId", auction.Id)
+            //Antiforgery token helper adds a cookie to the user's files, so that it can ensure the person is who they say they are
+            @Html.AntiForgeryToken()
+            
+
+            <input class="post-bid" type="submit" value="Bid" />
+          }  
+        </p>
+
+
+    </div>
+
+    @if (auction.ImageUrl != null)
+    {
+        <img src="@auction.ImageUrl" title="@auction.Title" />
+    }
+    
+</div>
+
+<!--This script is used to create a template so not only is the html update, but it is organized in the manner we've defined-->
+<!--This script won't actually be executed by the browser.  What it does it add this template to the DOM for the purpose of generating HTML markup-->
+<script id="current-price-template" type="application/html-template">
+    <p class="current-price">
+        <span>Current Price: {{CurrentPrice}}</span>
+        <span>[{{BidCount}} bids]</span>
+    </p>
+</script>
+
+<!--Script that uses Ajax to send data to the server without refreshing the page-->
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            //This statement finds the "post-bid" button and overrides it's click function
+            $('.post-bid').on("click", function() {
+
+                //locates the parent form
+                var form = $(this).parent("form");
+
+                //Sends an ajax request to post the new bid
+                $.ajax({
+                    type: "Post",
+                    url: form.attr('action'),
+                    data: form.serialize()
+                })
+                    //posts a success or error message depending on the success of the ajax action
+                    //UPDATE: Instead of a success, message, we are replacing "current-price" element with the html entered in the text box
+                    //html must be passed as a parameter into the success function.  This will be commented out and replaced with a method using JSON
+                    /*
+                    .success(function(html){
+                        //alert("Your bid has been submitted!");
+                        $('.current-price').replaceWith(html);
+                    })
+                    */
+
+                    //Retrieves the contents of the template we added above
+                    .success(function (data) {
+                        //Makes a copy of the template using the jQuery clone method so we can reuse the template
+                        var template = $('#current-price-template').clone().html();
+
+                        //Replaces the HTML data from the template using the JSON data that is submitted
+                        var html =
+                            template
+                                .replace('{{CurrentPrice}}', data.CurrentPrice)
+                                .replace('{{BidCount}}', data.BidCount);
+
+                        $('.current-price').replaceWith(html);
+                    })
+                    .error(function () {
+                        alert("Your bid has been rejected");
+                    });
+
+                return false;
+            });
+        });
+    </script>
+}

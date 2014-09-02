@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        <!--These statements are used to call the bundles styles and scripts specified in the BundleConfig file-->
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+                    <!-- This is the default navigation bar that has been commented out
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        </ul>
+                    </nav>
+                    -->
+                    <nav>
+                    <!--Here, we use the HTML action helper to call the partial view that displays the nav bar-->
+                    @Html.Action("CategoryNavigation", "Home")
+                    <!--Calls the SearchBar partial view to also place it into the navigation bar-->
+                    @Html.Partial("SearchBar")
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+                </div>
+            </div>
+        </footer>
+
+        @Scripts.Render("~/bundles/jquery")
+        @* @RenderSection("scripts", required: false)*@
+        <!--This if statement does the same thing as the code commented out above-->
+        <!--What it does is make the Scripts section optional (renders it only if it's defined)-->
+        @if (IsSectionDefined("scripts"))
+        {
+            @RenderSection("scripts")
+        }
+    </body>
+</html>

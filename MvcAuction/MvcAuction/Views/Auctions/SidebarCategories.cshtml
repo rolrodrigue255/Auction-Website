@@ -1,0 +1,6 @@
+﻿@foreach (string category in ViewBag.CategoryList)
+{
+    <ul>
+        <li>@Html.ActionLink(category, "CategoryResults", "Auctions", new { category }, null)</li>
+    </ul>
+}

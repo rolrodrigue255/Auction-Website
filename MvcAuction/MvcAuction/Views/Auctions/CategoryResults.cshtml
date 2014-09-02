@@ -1,0 +1,15 @@
+﻿<!--This statment indicates that the model (the contents of var results from the controller action) is of type ienumerable-->
+<!--Indicating this value type denotes that there are a multiple amount of Auction objects in the model-->
+@model IEnumerable<MvcAuction.Models.Auction>
+@{
+    ViewBag.Title = "Category Results";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Category Results</h2> <br />
+
+<!--For each item in Model (the var results which holds the query results) call the "_AuctionTile" page and pass the current item-->
+@foreach (var item in Model)
+{
+    @Html.Partial("_AuctionTile", item)
+}
