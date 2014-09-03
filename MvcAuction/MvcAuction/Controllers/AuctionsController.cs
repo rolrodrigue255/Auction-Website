@@ -172,7 +172,7 @@ namespace MvcAuction.Controllers
         //This HttpPost is used for this create function because it processes form post requests
         [HttpPost]
         //Authorize here is used to make sure that only authorized users (user with username "Rolando") are allowed to post auctions
-        [Authorize(Users="Rolando")]
+        [Authorize(/*Users="Rolando"*/)]
         //Calls the strongly-typed view named "Create.cshtml so the user can add new auctions"
         //Adds the auction model as the action parameter so we can bind the model with this action
         //As you can see, we added a Bind statement that EXCLUDES editing the Current Price property
