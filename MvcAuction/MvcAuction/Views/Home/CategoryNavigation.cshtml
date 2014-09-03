@@ -1,19 +1,14 @@
-﻿@*
-@{
+﻿@{
     /* This string array will hold the category names from ViewBag.Categories */
     /* We could have used ViewBag.Categories[] directly, but we need to use the category name, so CategoryResults now we're passing a "category" property value */
-    string[] category = new string[3];
-    category[0] = ViewBag.Categories[0];
-    category[1] = ViewBag.Categories[1];
-    category[2] = ViewBag.Categories[2];
-
+    string[] category = new string[] { ViewBag.Categories[0], ViewBag.Categories[1], ViewBag.Categories[2] };
 }
 
 <ul id="menu">   
         <!--Calls the ActionLink helper for the first 3 elements of the category array-->
-        <li>@Html.ActionLink(category[0], "CategoryResults", "Auctions", new { category }, null)</li>
-        <li>@Html.ActionLink(category[1], "CategoryResults", "Auctions", new { category }, null)</li>
-        <li>@Html.ActionLink(category[2], "CategoryResults", "Auctions", new { category }, null)</li>
+        <li>@Html.ActionLink(category[0], "CategoryResults", "Auctions", new { category = category[0] }, null)</li>
+        <li>@Html.ActionLink(category[1], "CategoryResults", "Auctions", new { category = category[1] }, null)</li>
+        <li>@Html.ActionLink(category[2], "CategoryResults", "Auctions", new { category = category[2] }, null)</li>
 
         <!--Adds a link to view the entire list of Auctions-->
         <li>@Html.ActionLink("View All Auctions", "Index", "Auctions")</li>
@@ -21,12 +16,12 @@
         <!--Adds the home link to the navigation bar after the categories-->
         <li>@Html.ActionLink("Home", "Index", "Home")</li>
 </ul>
-*@
 
+@*
 <ul id ="menu">
 <!--For each category type, we will create a list item with its name displayed and a link attributed to it-->
 <!--Each category string is taken from the list of distinct categories stored in ViewBag.Categories which were extracted using the query in the CategoryNavigation controller action-->
-<!--Instead of displaying EVERY category in the nav bar (more categories won't fit well), we will print the first 3 elements of ViewBag.Categories.  I will comment out old method-->
+<!--Instead of displaying EVERY category in the nav bar (more categories won't fit well), we will print the first 3 elements of ViewBag.Categories.  I will comment out this old method-->
         @foreach (string category in ViewBag.Categories)
         {
         //Creates an actionlink for each distinct category in ViewBag.Categories
@@ -40,3 +35,4 @@
         <!--Adds the home link to the navigation bar after the categories-->
         <li>@Html.ActionLink("Home", "Index", "Home")</li>
 </ul>
+*@
